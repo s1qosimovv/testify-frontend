@@ -31,6 +31,7 @@ class QuizScreen extends StatelessWidget {
                       children: [
                         // Glassmorphic Progress Bar
                         _buildProgressBar(
+                          context,
                           provider.currentQuestionIndex, 
                           totalQuestions,
                           isShort: isShort,
@@ -101,7 +102,7 @@ class QuizScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressBar(int current, int total, {bool isShort = false}) {
+  Widget _buildProgressBar(BuildContext context, int current, int total, {bool isShort = false}) {
     final progress = (current + 1) / total;
     
     return Container(

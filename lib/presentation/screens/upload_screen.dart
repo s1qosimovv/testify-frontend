@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../state/quiz_provider.dart';
-import '../widgets/ai_orb.dart';
 import '../widgets/mesh_background.dart';
 import 'dart:ui';
 

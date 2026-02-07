@@ -80,7 +80,7 @@ class _AIOrbState extends State<AIOrb> with SingleTickerProviderStateMixin {
                 height: widget.size * 0.4,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: AppTheme.orbGradient,
+                  gradient: AppTheme.premiumCyanGradient,
                   boxShadow: [
                     BoxShadow(
                       color: AppTheme.primaryCyan.withOpacity(0.8),
