@@ -31,19 +31,19 @@ class UploadScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 10),
-                                // Branded Logo - Explicitly Aligned Left
+                                // Branded Logo - Perfectly Balanced Size
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
                                     child: Image.asset(
                                       'assets/images/logo.png',
-                                      height: 120, // Adjusted for better balance
+                                      height: 60, // Reduced for mobile balance
                                       fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 24), // Reduced spacing
                                 Text(
                                   "Bilimingizni testga\naylantiring",
                                   style: AppTheme.heading1.copyWith(
