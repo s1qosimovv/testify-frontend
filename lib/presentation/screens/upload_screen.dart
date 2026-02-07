@@ -26,17 +26,23 @@ class UploadScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Top Content: Orb and Title
+                            // Top Content: Logo and Title
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 10),
-                                Center(
-                                  child: AIOrb(size: constraints.maxHeight < 600 ? 140 : 180),
+                                // Branded Logo in Top-Left
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.asset(
+                                    'assets/images/logo.png',
+                                    height: 50,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
-                                const SizedBox(height: 24),
+                                const SizedBox(height: 32),
                                 Text(
                                   "Bilimingizni testga\naylantiring",
-                                  textAlign: TextAlign.center,
                                   style: AppTheme.heading1.copyWith(
                                     fontSize: constraints.maxHeight < 600 ? 28 : 32,
                                     height: 1.2,
@@ -46,7 +52,6 @@ class UploadScreen extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 Text(
                                   "Hujjatni tashlang. AI qolganini qiladi.",
-                                  textAlign: TextAlign.center,
                                   style: AppTheme.bodyMedium.copyWith(
                                     fontSize: 14,
                                     color: AppTheme.textSecondary,
