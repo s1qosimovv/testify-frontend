@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
@@ -46,10 +47,23 @@ class ApiService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        throw Exception('Failed to generate quiz: ${response.body}');
+        // Parse error message from backend
+        try {
+          final errorData = json.decode(response.body);
+          final errorDetail = errorData['detail'] ?? 'Noma\'lum xatolik';
+          throw Exception(errorDetail);
+        } catch (e) {
+          // If JSON parsing fails, use raw response
+          throw Exception('Server xatosi: ${response.body}');
+        }
       }
+    } on TimeoutException {
+      throw Exception('Vaqt tugadi. Internet aloqangizni tekshiring yoki qayta urinib ko\'ring.');
     } catch (e) {
-      throw Exception('Error generating quiz: $e');
+      // Re-throw if already an Exception with our message
+      if (e is Exception) rethrow;
+      throw Exception('Xatolik: $e');
+
     }
   }
 
