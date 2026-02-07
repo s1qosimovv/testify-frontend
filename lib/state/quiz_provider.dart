@@ -6,10 +6,13 @@ import '../data/repositories/quiz_repository.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../core/utils/file_picker_helper.dart';
+
 enum ScreenState { upload, loading, quiz, result }
 
 class QuizProvider with ChangeNotifier {
   final QuizRepository _repository = QuizRepository();
+  final FilePickerHelper _filePickerHelper = FilePickerHelper();
 
   ScreenState _currentScreen = ScreenState.upload;
   ScreenState get currentScreen => _currentScreen;
@@ -55,6 +58,13 @@ class QuizProvider with ChangeNotifier {
   int get totalQuestions => _totalQuestions;
 
   Timer? _loadingTimer;
+
+  Future<void> pickFile() async {
+    final file = await _filePickerHelper.pickFile();
+    if (file != null) {
+      setFile(file);
+    }
+  }
 
   void setFile(PlatformFile file) {
     if (file.size > 5 * 1024 * 1024) {

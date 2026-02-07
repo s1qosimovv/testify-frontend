@@ -4,30 +4,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import '../constants/api_constants.dart';
 
+import '../utils/platform_multipart_helper.dart'
+    if (dart.library.html) '../utils/platform_multipart_helper_web.dart'
+    if (dart.library.io) '../utils/platform_multipart_helper_mobile.dart';
+
 class ApiService {
   Future<String> uploadFile(PlatformFile file) async {
     try {
       final uri = Uri.parse(ApiConstants.uploadFile);
       final request = http.MultipartRequest('POST', uri);
       
-      if (kIsWeb) {
-        // Web execution path
-        if (file.bytes == null) {
-           throw Exception("Fayl ma'lumotlari topilmadi (Web)");
-        }
-        request.files.add(http.MultipartFile.fromBytes(
-          'file', 
-          file.bytes!, 
-          filename: file.name
-        ));
-      } else {
-        // Mobile execution path - using a dynamic approach to avoid direct 'path' property access in a way that might block web compile if analyzed strictly
-        final String? filePath = file.path;
-        if (filePath == null) {
-          throw Exception("Fayl manzili topilmadi (Mobile)");
-        }
-        request.files.add(await http.MultipartFile.fromPath('file', filePath));
-      }
+      final helper = getHelper();
+      request.files.add(await helper.createMultipartFile(file, 'file'));
 
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import '../core/theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class AIOrb extends StatefulWidget {
   final double size;
