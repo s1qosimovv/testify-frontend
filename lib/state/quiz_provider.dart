@@ -7,6 +7,9 @@ import '../data/repositories/quiz_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../core/utils/file_picker_helper.dart';
+import '../core/utils/url_helper.dart'
+    if (dart.library.html) '../core/utils/url_helper_web.dart'
+    if (dart.library.io) '../core/utils/url_helper_mobile.dart';
 
 enum ScreenState { upload, loading, quiz, result }
 
@@ -214,10 +217,8 @@ class QuizProvider with ChangeNotifier {
     
     try {
       final shareLink = await _repository.getTelegramLink(_quizId!);
-      final url = Uri.parse(shareLink);
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      }
+      final helper = getUrlHelper();
+      await helper.openUrl(shareLink);
     } catch (e) {
       _error = "Telegramga ulashda xatolik yuz berdi";
       notifyListeners();
