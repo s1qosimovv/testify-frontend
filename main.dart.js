@@ -80539,7 +80539,7 @@ q=A.ae(38,B.o.p()>>>16&255,B.o.p()>>>8&255,B.o.p()&255)
 p=A.ce(12)
 o=A.nG(A.ae(B.d.aj(76.5),B.o.p()>>>16&255,B.o.p()>>>8&255,B.o.p()&255),1)
 n=t.D
-s=A.hs(b,A.lB(A.cN(l,A.e5(A.c([A.cN(l,A.cc("SAVOL #"+(c+1),l,l,l,B.eR.QX(B.o,B.cz,1.2),l,l),B.r,l,new A.cz(q,l,o,p,l,l,B.ah),l,l,l,B.D_,l,l,l),B.hG,A.cc(d.a,l,l,l,B.hO.QY(22,B.dg,1.4),l,l)],n),B.ch,B.a4,B.aj),B.r,l,r,l,l,l,new A.aT(s,s,s,s),l,l,l),new A.hm(15,15,l)))
+s=A.hs(b,A.lB(A.cN(l,A.e5(A.c([A.cN(l,A.cc("SAVOL #"+(c+1),l,l,l,B.eR.QX(B.o,B.cz,1.2),l,l),B.r,l,new A.cz(q,l,o,p,l,l,B.ah),l,l,l,B.D_,l,l,l),B.eM,A.cc(d.a,l,l,l,B.hO.QY(22,B.dg,1.4),l,l)],n),B.ch,B.a4,B.aj),B.r,l,r,l,l,l,new A.aT(s,s,s,s),l,l,l),new A.hm(15,15,l)))
 c=A.jE(l,k?16:24,l)
 b=d.b
 r=A.t(b).i("d5<1,2>")
@@ -80656,7 +80656,7 @@ m=f.f
 m===$&&A.a()
 l=t.D
 k=j.r
-return A.Mh(new A.fm(new A.aj(0,1/0,h,1/0),new A.cx(new A.aT(g,g,g,g),A.e5(A.c([A.e5(A.c([e,B.hG,A.aaY(A.hs(q,A.lB(A.cN(i,A.e5(A.c([s,B.hG,A.i6(m,new A.aly(n,f,b,j.c),i),B.eM,A.iC(A.c([f.AI(B.i.k(j.d),"To'g'ri",B.dW),f.AI(B.i.k(j.e),"Xato",B.aX),f.AI(B.i.k(j.f),"Jami",B.o)],l),B.t6),B.hG,f.AG(B.m6,B.EC,B.DK,"GURUHDA ISHLATISH",new A.alz(k))],l),B.ad,B.a4,B.aj),B.r,i,o,i,i,i,new A.aT(p,p,p,p),i,i,i),new A.hm(15,15,i))),r)],l),B.ad,B.a4,B.aj),B.eM,A.iC(A.c([A.Id(f.AG(B.o,B.n3,B.DJ,"QAYTA",new A.alA(k))),B.xZ,A.Id(f.AG(B.dW,B.n2,B.DI,"UYGA",new A.alB(k)))],l),B.a4)],l),B.ad,B.cL,B.aj),i),i),i,B.ax)},
+return A.Mh(new A.fm(new A.aj(0,1/0,h,1/0),new A.cx(new A.aT(g,g,g,g),A.e5(A.c([A.e5(A.c([e,B.eM,A.aaY(A.hs(q,A.lB(A.cN(i,A.e5(A.c([s,B.eM,A.i6(m,new A.aly(n,f,b,j.c),i),B.hG,A.iC(A.c([f.AI(B.i.k(j.d),"To'g'ri",B.dW),f.AI(B.i.k(j.e),"Xato",B.aX),f.AI(B.i.k(j.f),"Jami",B.o)],l),B.t6),B.eM,f.AG(B.m6,B.EC,B.DK,"GURUHDA ISHLATISH",new A.alz(k))],l),B.ad,B.a4,B.aj),B.r,i,o,i,i,i,new A.aT(p,p,p,p),i,i,i),new A.hm(15,15,i))),r)],l),B.ad,B.a4,B.aj),B.hG,A.iC(A.c([A.Id(f.AG(B.o,B.n3,B.DJ,"QAYTA",new A.alA(k))),B.xZ,A.Id(f.AG(B.dW,B.n2,B.DI,"UYGA",new A.alB(k)))],l),B.a4)],l),B.ad,B.cL,B.aj),i),i),i,B.ax)},
 $S:103}
 A.aly.prototype={
 $2(a,b){var s,r=this,q=null,p=r.c.d<600,o=p?140:180,n=r.b,m=n.f
@@ -80733,7 +80733,7 @@ $3(a,b,c){return A.a4k(new A.aeT(this.a,b))},
 $S:510}
 A.aeT.prototype={
 $2(a,b){var s,r,q,p,o,n,m,l=null,k=b.d,j=A.bU(a,l,t.w).w.a.a>600?32:20,i=A.ce(12)
-i=A.hs(i,new A.xB(A.aHr(l,l,new A.vO("assets/images/logo.png",l,l)),120,B.zv,l))
+i=A.hs(i,new A.xB(A.aHr(l,l,new A.vO("assets/images/logo.png",l,l)),60,B.zv,l))
 s=t.D
 i=A.e5(A.c([B.y0,new A.k7(B.dL,l,l,i,l),B.eM,A.cc("Bilimingizni testga\naylantiring",l,l,l,B.yp.QY(k<600?28:32,B.cz,1.2),l,l),B.hH,A.cc("Hujjatni tashlang. AI qolganini qiladi.",l,l,l,B.eR.lF(B.bN,14),l,l)],s),B.ch,B.a4,B.aj)
 r=this.a
@@ -80747,7 +80747,7 @@ if(n!=null){m=A.vL(A.ae(B.d.aj(127.5),B.aX.p()>>>16&255,B.aX.p()>>>8&255,B.aX.p(
 o.push(A.cN(l,A.iC(A.c([B.DN,B.kA,A.Id(A.cc(n,l,l,l,B.eT.p6(B.aX,B.bR),l,l))],s),B.a4),B.r,l,m,l,l,l,B.D2,l,l,l))}o.push(B.cR)
 o.push(r.a0u(a,q))
 o.push(B.y0)
-return A.Mh(new A.fm(new A.aj(0,1/0,k,1/0),new A.cx(new A.aT(j,j,j,j),A.e5(A.c([i,B.eM,p,B.eM,A.e5(o,B.ad,B.a4,B.aj)],s),B.d5,B.cL,B.aj),l),l),l,B.ax)},
+return A.Mh(new A.fm(new A.aj(0,1/0,k,1/0),new A.cx(new A.aT(j,j,j,j),A.e5(A.c([i,B.hG,p,B.hG,A.e5(o,B.ad,B.a4,B.aj)],s),B.d5,B.cL,B.aj),l),l),l,B.ax)},
 $S:103}
 A.aeO.prototype={
 $0(){return this.a.kN()},
@@ -86338,8 +86338,8 @@ B.y0=new A.ey(null,10,null,null)
 B.MO=new A.ey(null,12,null,null)
 B.cR=new A.ey(null,16,null,null)
 B.MP=new A.ey(null,20,null,null)
-B.hG=new A.ey(null,24,null,null)
-B.eM=new A.ey(null,32,null,null)
+B.eM=new A.ey(null,24,null,null)
+B.hG=new A.ey(null,32,null,null)
 B.MQ=new A.ey(null,40,null,null)
 B.hH=new A.ey(null,8,null,null)
 B.MR=new A.A7(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
