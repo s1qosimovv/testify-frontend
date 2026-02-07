@@ -82,98 +82,114 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                           children: [
                             Column(
                               children: [
-                                // Top AI Orb (celebratory)
+                                const SizedBox(height: 20),
+                                // Branded Logo (Celebrating)
                                 ScaleTransition(
                                   scale: _scaleAnimation,
-                                  child: AIOrb(size: constraints.maxHeight < 600 ? 100 : 140),
+                                  child: Image.asset(
+                                    'assets/images/logo.png',
+                                    height: 80,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
-                                const SizedBox(height: 24),
+                                const SizedBox(height: 32),
         
                                 // Main Result Card
                                 ScaleTransition(
                                   scale: _scaleAnimation,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(32),
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                                      child: Container(
-                                        padding: EdgeInsets.all(constraints.maxHeight < 600 ? 20 : 32),
-                                        decoration: AppTheme.glassDecoration(borderRadius: 32),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              message,
-                                              style: AppTheme.heading2.copyWith(
-                                                fontSize: constraints.maxHeight < 600 ? 24 : 30,
-                                                fontWeight: FontWeight.w800,
-                                                color: statusColor,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(height: 24),
+                                  child: Container(
+                                    padding: EdgeInsets.all(constraints.maxHeight < 600 ? 20 : 32),
+                                    decoration: AppTheme.glassDecoration(
+                                      borderRadius: 40,
+                                      borderColor: statusColor.withOpacity(0.3),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          message,
+                                          style: AppTheme.heading2.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.white,
+                                            shadows: [
+                                              Shadow(color: statusColor.withOpacity(0.5), blurRadius: 20),
+                                            ],
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(height: 40),
         
-                                            // Animated Percentage
-                                            AnimatedBuilder(
-                                              animation: _progressAnimation,
-                                              builder: (context, child) {
-                                                final orbSize = constraints.maxHeight < 600 ? 140.0 : 180.0;
-                                                return Stack(
-                                                  alignment: Alignment.center,
+                                        // Premium Circular Progress
+                                        AnimatedBuilder(
+                                          animation: _progressAnimation,
+                                          builder: (context, child) {
+                                            final orbSize = 200.0;
+                                            return Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                // Outer Glow
+                                                Container(
+                                                  width: orbSize,
+                                                  height: orbSize,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: statusColor.withOpacity(0.1),
+                                                        blurRadius: 100,
+                                                        spreadRadius: 10,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: orbSize,
+                                                  height: orbSize,
+                                                  child: CircularProgressIndicator(
+                                                    value: _progressAnimation.value * (percentage / 100),
+                                                    strokeWidth: 16,
+                                                    strokeCap: StrokeCap.round,
+                                                    backgroundColor: Colors.white.withOpacity(0.05),
+                                                    valueColor: AlwaysStoppedAnimation<Color>(statusColor),
+                                                  ),
+                                                ),
+                                                Column(
                                                   children: [
-                                                    SizedBox(
-                                                      width: orbSize,
-                                                      height: orbSize,
-                                                      child: CircularProgressIndicator(
-                                                        value: _progressAnimation.value * (percentage / 100),
-                                                        strokeWidth: 12,
-                                                        backgroundColor: AppTheme.glassSurface,
-                                                        valueColor: AlwaysStoppedAnimation<Color>(statusColor),
+                                                    Text(
+                                                      '${(_progressAnimation.value * percentage).toInt()}%',
+                                                      style: AppTheme.heading1.copyWith(
+                                                        fontSize: 64,
+                                                        fontWeight: FontWeight.w900,
+                                                        letterSpacing: -2,
                                                       ),
                                                     ),
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                          '${(_progressAnimation.value * percentage).toInt()}%',
-                                                          style: AppTheme.heading1.copyWith(
-                                                            fontSize: constraints.maxHeight < 600 ? 44 : 54,
-                                                            fontWeight: FontWeight.w900,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          'Haqqoniy natija',
-                                                          style: AppTheme.bodySmall,
-                                                        ),
-                                                      ],
+                                                    Text(
+                                                      'NATIJA',
+                                                      style: AppTheme.bodySmall.copyWith(
+                                                        color: AppTheme.textSecondary,
+                                                        fontWeight: FontWeight.w900,
+                                                        letterSpacing: 3,
+                                                      ),
                                                     ),
                                                   ],
-                                                );
-                                              },
-                                            ),
-        
-                                            const SizedBox(height: 32),
-        
-                                            // Stats
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                _buildStat(score.toString(), "To'g'ri", AppTheme.successGreen),
-                                                _buildStat(wrongAnswers.toString(), "Xato", AppTheme.energyPink),
-                                                _buildStat(total.toString(), "Jami", AppTheme.primaryCyan),
+                                                ),
                                               ],
-                                            ),
-                                            
-                                            const SizedBox(height: 24),
-                                            // Telegram Button
-                                            _buildButton(
-                                              onTap: () => provider.shareToTelegram(),
-                                              label: "GURUHDA ISHLATISH",
-                                              icon: Icons.send_rounded,
-                                              gradient: const LinearGradient(colors: [Color(0xFF229ED9), Color(0xFF2AABEE)]),
-                                              color: const Color(0xFF229ED9),
-                                            ),
+                                            );
+                                          },
+                                        ),
+        
+                                        const SizedBox(height: 48),
+        
+                                        // Stats Row
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            _buildStat(score.toString(), "TO'G'RI", AppTheme.successGreen),
+                                            _buildStat(wrongAnswers.toString(), "XATO", AppTheme.energyPink),
+                                            _buildStat(total.toString(), "JAMI", AppTheme.textAccent),
                                           ],
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -183,26 +199,38 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                             const SizedBox(height: 32),
         
                             // Action Buttons
-                            Row(
+                            Column(
                               children: [
-                                Expanded(
-                                  child: _buildButton(
-                                    onTap: () => provider.retryQuiz(),
-                                    label: "QAYTA",
-                                    icon: Icons.replay_rounded,
-                                    gradient: AppTheme.blueGlassGradient,
-                                    color: AppTheme.primaryCyan,
-                                  ),
+                                _buildButton(
+                                  onTap: () => provider.shareToTelegram(),
+                                  label: "GURUHDA ISHLATISH",
+                                  icon: Icons.telegram_rounded,
+                                  gradient: const LinearGradient(colors: [Color(0xFF229ED9), Color(0xFF2AABEE)]),
+                                  color: const Color(0xFF229ED9),
                                 ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: _buildButton(
-                                    onTap: () => provider.resetQuiz(),
-                                    label: "UYGA",
-                                    icon: Icons.home_rounded,
-                                    gradient: AppTheme.greenGlassGradient,
-                                    color: AppTheme.successGreen,
-                                  ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildButton(
+                                        onTap: () => provider.retryQuiz(),
+                                        label: "QAYTA",
+                                        icon: Icons.refresh_rounded,
+                                        gradient: AppTheme.premiumBlueGradient,
+                                        color: AppTheme.primaryBlue,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: _buildButton(
+                                        onTap: () => provider.resetQuiz(),
+                                        label: "UYGA",
+                                        icon: Icons.home_rounded,
+                                        gradient: AppTheme.premiumEmeraldGradient,
+                                        color: AppTheme.successGreen,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -225,11 +253,20 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
       children: [
         Text(
           value,
-          style: AppTheme.heading2.copyWith(color: color, fontWeight: FontWeight.w900),
+          style: AppTheme.heading1.copyWith(
+            color: color, 
+            fontSize: 32,
+            shadows: [Shadow(color: color.withOpacity(0.3), blurRadius: 10)],
+          ),
         ),
+        const SizedBox(height: 4),
         Text(
           label,
-          style: AppTheme.bodyMedium,
+          style: AppTheme.bodySmall.copyWith(
+            color: AppTheme.textSecondary,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 1.0,
+          ),
         ),
       ],
     );
@@ -242,27 +279,24 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     required Gradient gradient,
     required Color color,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: AppTheme.glassButtonDecoration(
-              gradient: gradient,
-              borderColor: color.withOpacity(0.5),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 22),
+        decoration: AppTheme.premiumButtonDecoration(
+          gradient: gradient,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 22),
+            const SizedBox(width: 12),
+            Text(
+              label, 
+              style: AppTheme.buttonText.copyWith(fontSize: 16),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: AppTheme.textPrimary, size: 20),
-                const SizedBox(width: 8),
-                Text(label, style: AppTheme.buttonText),
-              ],
-            ),
-          ),
+          ],
         ),
       ),
     );

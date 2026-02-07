@@ -30,34 +30,52 @@ class UploadScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 20),
                                 // Branded Logo - Perfectly Balanced Size
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset(
-                                      'assets/images/logo.png',
-                                      height: 60, // Reduced for mobile balance
-                                      fit: BoxFit.contain,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 10),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        'assets/images/logo.png',
+                                        height: 60,
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 24), // Reduced spacing
+                                const SizedBox(height: 32),
                                 Text(
                                   "Bilimingizni testga\naylantiring",
                                   style: AppTheme.heading1.copyWith(
-                                    fontSize: constraints.maxHeight < 600 ? 28 : 32,
-                                    height: 1.2,
-                                    fontWeight: FontWeight.w800,
+                                    fontSize: constraints.maxHeight < 600 ? 30 : 36,
+                                    height: 1.1,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.black.withOpacity(0.3),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 12),
                                 Text(
                                   "Hujjatni tashlang. AI qolganini qiladi.",
                                   style: AppTheme.bodyMedium.copyWith(
-                                    fontSize: 14,
-                                    color: AppTheme.textSecondary,
+                                    color: AppTheme.textSecondary.withOpacity(0.8),
+                                    letterSpacing: 0.2,
                                   ),
                                 ),
                               ],
@@ -128,54 +146,76 @@ class UploadScreen extends StatelessWidget {
   Widget _buildImmersiveDropZone(BuildContext context, QuizProvider provider) {
     final hasFile = provider.selectedFile != null;
     
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: InkWell(
-          onTap: () => provider.pickFile(),
+    return RepaintBoundary(
+      child: Container(
+        padding: const EdgeInsets.all(2), // Gradient border effect
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          gradient: hasFile 
+              ? AppTheme.premiumCyanGradient 
+              : LinearGradient(colors: [AppTheme.glassBorder, AppTheme.glassBorder]),
+        ),
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
-          child: Container(
-            height: 180,
-            decoration: BoxDecoration(
-              color: AppTheme.glassSurface,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: InkWell(
+              onTap: () => provider.pickFile(),
               borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: hasFile ? AppTheme.primaryCyan : AppTheme.glassBorder,
-                width: 2,
+              child: AnimatedContainer(
+                duration: AppTheme.mediumAnimation,
+                height: 200,
+                decoration: AppTheme.glassDecoration(
+                  borderRadius: 30,
+                  surfaceColor: hasFile ? AppTheme.primaryCyan.withOpacity(0.1) : null,
+                  borderColor: Colors.transparent, // Handled by outer container
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: hasFile ? AppTheme.primaryCyan.withOpacity(0.2) : AppTheme.glassSurface,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          if (hasFile)
+                            BoxShadow(
+                              color: AppTheme.primaryCyan.withOpacity(0.3),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            ),
+                        ],
+                      ),
+                      child: Icon(
+                        hasFile ? Icons.task_alt_rounded : Icons.cloud_upload_outlined,
+                        size: 40,
+                        color: hasFile ? AppTheme.accentCyan : Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        hasFile ? provider.selectedFile!.name : "Faylni tanlang yoki tashlang",
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTheme.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: hasFile ? Colors.white : AppTheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                    if (!hasFile) ...[
+                       Text(
+                        "PDF, DOCX, TXT • Max 10MB",
+                        style: AppTheme.bodySmall.copyWith(color: AppTheme.textSecondary),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-              boxShadow: hasFile ? [
-                BoxShadow(
-                  color: AppTheme.primaryCyan.withOpacity(0.2),
-                  blurRadius: 20,
-                  spreadRadius: 2,
-                )
-              ] : null,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  hasFile ? Icons.description_rounded : Icons.add_circle_outline_rounded,
-                  size: 48,
-                  color: hasFile ? AppTheme.primaryCyan : AppTheme.textSecondary,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  hasFile ? provider.selectedFile!.name : "Faylni tanlang yoki tashlang",
-                  style: AppTheme.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: hasFile ? AppTheme.primaryCyan : AppTheme.textPrimary,
-                  ),
-                ),
-                if (!hasFile) ...[
-                   const SizedBox(height: 8),
-                   Text(
-                    "PDF, DOCX, TXT • Max 10MB",
-                    style: AppTheme.bodyMedium,
-                  ),
-                ],
-              ],
             ),
           ),
         ),
@@ -185,22 +225,34 @@ class UploadScreen extends StatelessWidget {
 
   Widget _buildQuestionCountSelector(BuildContext context, QuizProvider provider) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: AppTheme.glassDecoration(
-        borderRadius: 20,
-        borderColor: AppTheme.primaryBlue.withOpacity(0.3),
+        borderRadius: 28,
+        borderColor: AppTheme.primaryBlue.withOpacity(0.2),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Savollar soni",
-                style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Savollar soni",
+                    style: AppTheme.heading3.copyWith(fontSize: 18),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Maksimum 250 ta",
+                    style: AppTheme.bodySmall,
+                  ),
+                ],
               ),
               Container(
-                width: 100,
+                width: 90,
+                height: 54,
                 child: TextField(
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -211,34 +263,25 @@ class UploadScreen extends StatelessWidget {
                     }
                   },
                   textAlign: TextAlign.center,
-                  style: AppTheme.heading3.copyWith(color: AppTheme.primaryBlue, fontSize: 18),
+                  style: AppTheme.heading3.copyWith(color: AppTheme.accentCyan, fontSize: 20),
                   decoration: InputDecoration(
                     hintText: "10",
                     hintStyle: TextStyle(color: AppTheme.textSecondary.withOpacity(0.3)),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    contentPadding: EdgeInsets.zero,
                     filled: true,
-                    fillColor: AppTheme.primaryBlue.withOpacity(0.1),
+                    fillColor: Colors.white.withOpacity(0.05),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppTheme.primaryBlue.withOpacity(0.4)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppTheme.primaryBlue.withOpacity(0.2)),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppTheme.primaryBlue, width: 2),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: AppTheme.accentCyan.withOpacity(0.5), width: 1.5),
                     ),
                   ),
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Maksimum 250 ta savol yaratish mumkin",
-            style: AppTheme.bodySmall.copyWith(fontSize: 12, color: AppTheme.textSecondary),
           ),
         ],
       ),
@@ -247,65 +290,77 @@ class UploadScreen extends StatelessWidget {
 
   Widget _buildTimeSelector(BuildContext context, QuizProvider provider) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: AppTheme.glassDecoration(
-        borderRadius: 20,
-        borderColor: AppTheme.primaryCyan.withOpacity(0.3),
+        borderRadius: 28,
+        borderColor: AppTheme.primaryCyan.withOpacity(0.2),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Savollarga vaqt",
-                style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
+                style: AppTheme.heading3.copyWith(fontSize: 18),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryCyan.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
+                  color: AppTheme.primaryCyan.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.primaryCyan.withOpacity(0.3)),
                 ),
                 child: Text(
                   "${provider.timePerQuestion} sek",
-                  style: AppTheme.heading3.copyWith(color: AppTheme.primaryCyan, fontSize: 14),
+                  style: AppTheme.bodySmall.copyWith(
+                    color: AppTheme.accentCyan,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [15, 30, 45, 60].map((seconds) {
-                final isSelected = provider.timePerQuestion == seconds;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+          const SizedBox(height: 20),
+          Row(
+            children: [15, 30, 45, 60].map((seconds) {
+              final isSelected = provider.timePerQuestion == seconds;
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: InkWell(
                     onTap: () => provider.setTimePerQuestion(seconds),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: AnimatedContainer(
+                      duration: AppTheme.shortAnimation,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        color: isSelected ? AppTheme.primaryCyan : AppTheme.glassSurface,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: isSelected ? AppTheme.primaryCyan : AppTheme.glassBorder,
-                        ),
+                        gradient: isSelected ? AppTheme.premiumCyanGradient : null,
+                        color: isSelected ? null : Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: isSelected ? [
+                          BoxShadow(
+                            color: AppTheme.primaryCyan.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          )
+                        ] : null,
                       ),
-                      child: Text(
-                        "$seconds s",
-                        style: AppTheme.bodySmall.copyWith(
-                          color: isSelected ? Colors.black : AppTheme.textPrimary,
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          "$seconds",
+                          style: AppTheme.bodyLarge.copyWith(
+                            color: isSelected ? Colors.white : AppTheme.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -315,34 +370,48 @@ class UploadScreen extends StatelessWidget {
   Widget _buildStartButton(BuildContext context, QuizProvider provider) {
     final canStart = provider.selectedFile != null && !provider.isLoading;
 
-    return Opacity(
-      opacity: canStart ? 1.0 : 0.5,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: InkWell(
-            onTap: canStart ? () => provider.startQuizGeneration() : null,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: AppTheme.glassButtonDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppTheme.primaryCyan, AppTheme.primaryBlue],
-                ),
-                borderColor: AppTheme.primaryCyan.withOpacity(0.6),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Quizni yaratish",
-                    style: AppTheme.buttonText,
+    return AnimatedOpacity(
+      duration: AppTheme.mediumAnimation,
+      opacity: canStart ? 1.0 : 0.4,
+      child: InkWell(
+        onTap: canStart ? () => provider.startQuizGeneration() : null,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          width: double.infinity,
+          height: 64,
+          decoration: AppTheme.premiumButtonDecoration(
+            gradient: AppTheme.premiumBlueGradient,
+            glow: canStart,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              if (provider.isLoading)
+                const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2.5,
                   ),
-                  const SizedBox(width: 12),
-                  Icon(Icons.auto_awesome, color: AppTheme.textPrimary, size: 20),
-                ],
-              ),
-            ),
+                )
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Quizni yaratish",
+                      style: AppTheme.buttonText.copyWith(fontSize: 18),
+                    ),
+                    const SizedBox(width: 14),
+                    const Icon(
+                      Icons.auto_awesome_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ],
+                ),
+            ],
           ),
         ),
       ),

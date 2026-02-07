@@ -104,146 +104,158 @@ class QuizScreen extends StatelessWidget {
   Widget _buildProgressBar(int current, int total, {bool isShort = false}) {
     final progress = (current + 1) / total;
     
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: AppTheme.glassDecoration(borderRadius: 24),
-          child: Column(
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: AppTheme.glassDecoration(
+        borderRadius: 28,
+        surfaceColor: Colors.white.withOpacity(0.03),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Savol ${current + 1}/$total',
-                    style: AppTheme.bodyLarge.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.textPrimary,
+                   Text(
+                    'SAVOL',
+                    style: AppTheme.bodySmall.copyWith(
+                      color: AppTheme.textAccent,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
                     ),
                   ),
+                  const SizedBox(height: 2),
                   Text(
-                    '${(progress * 100).toInt()}%',
-                    style: AppTheme.heading3.copyWith(
-                      color: AppTheme.primaryCyan,
-                      fontWeight: FontWeight.w800,
-                    ),
+                    '${current + 1} / $total',
+                    style: AppTheme.heading2.copyWith(fontSize: 24),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              // Group Share Button (Before test starts)
-              Consumer<QuizProvider>(
-                builder: (context, provider, child) {
-                  return InkWell(
-                    onTap: () => provider.shareToTelegram(),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryCyan.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppTheme.primaryCyan.withOpacity(0.3)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.groups_rounded, color: AppTheme.primaryCyan, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            "GURUHDA ISHLATISH",
-                            style: AppTheme.bodySmall.copyWith(
-                              color: AppTheme.primaryCyan,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: AppTheme.glassSurface,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: progress,
-                      child: Container(
-                        height: 10,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [AppTheme.primaryCyan, AppTheme.primaryBlue],
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppTheme.primaryCyan.withOpacity(0.5),
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
-                      ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: AppTheme.premiumCyanGradient,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.primaryCyan.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
                   ],
+                ),
+                child: Text(
+                  '${(progress * 100).toInt()}%',
+                  style: AppTheme.buttonText.copyWith(fontSize: 14),
                 ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 12),
+          // Group Share Button (Optimized for Premium UI)
+          Consumer<QuizProvider>(
+            builder: (context, provider, child) {
+              return InkWell(
+                onTap: () => provider.shareToTelegram(),
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.share_rounded, color: AppTheme.textAccent, size: 18),
+                      const SizedBox(width: 10),
+                      Text(
+                        "GURUHDA ISHLATISH",
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.textAccent,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 20),
+          // Premium Progress Bar
+          Container(
+            height: 8,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                AnimatedContainer(
+                  duration: AppTheme.mediumAnimation,
+                  width: (MediaQuery.of(context).size.width - 80) * progress,
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.premiumCyanGradient,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primaryCyan.withOpacity(0.4),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildQuestionCard(String question, int questionNumber, {bool isShort = false}) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          padding: EdgeInsets.all(isShort ? 20 : 28),
-          decoration: AppTheme.glassDecoration(borderRadius: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: EdgeInsets.all(isShort ? 24 : 32),
+      decoration: AppTheme.glassDecoration(
+        borderRadius: 32,
+        borderColor: Colors.white.withOpacity(0.1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryCyan.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.primaryCyan.withOpacity(0.3)),
-                ),
-                child: Text(
-                  'SAVOL #$questionNumber',
-                  style: AppTheme.bodyMedium.copyWith(
-                    color: AppTheme.primaryCyan,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
+              Icon(Icons.help_outline_rounded, color: AppTheme.accentCyan, size: 18),
+              const SizedBox(width: 8),
               Text(
-                question,
-                style: AppTheme.heading2.copyWith(
-                  height: 1.4,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                'TEST SAVOLI',
+                style: AppTheme.bodySmall.copyWith(
+                  color: AppTheme.textAccent,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.2,
                 ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 24),
+          Text(
+            question,
+            style: AppTheme.heading2.copyWith(
+              height: 1.5,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: Colors.white.withOpacity(0.95),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -257,89 +269,92 @@ class QuizScreen extends StatelessWidget {
     VoidCallback? onTap,
     bool isShort = false,
   }) {
-    Color borderColor = AppTheme.glassBorder;
-    Gradient? gradient;
+    Color glowColor = Colors.transparent;
+    Gradient? cardGradient;
+    Color? textColor;
     
     if (showFeedback) {
       if (isCorrect) {
-        borderColor = AppTheme.successGreen;
-        gradient = AppTheme.greenGlassGradient;
+        glowColor = AppTheme.successGreen.withOpacity(0.3);
+        cardGradient = AppTheme.premiumEmeraldGradient.withOpacity(0.1);
+        textColor = AppTheme.successGreen;
       } else if (isSelected && !isCorrect) {
-        borderColor = AppTheme.energyPink;
-        gradient = AppTheme.pinkGlassGradient;
+        glowColor = AppTheme.energyPink.withOpacity(0.3);
+        textColor = AppTheme.energyPink;
       }
     } else if (isSelected) {
-      borderColor = AppTheme.primaryCyan;
-      gradient = AppTheme.blueGlassGradient;
+      glowColor = AppTheme.primaryBlue.withOpacity(0.3);
+      cardGradient = AppTheme.premiumBlueGradient.withOpacity(0.1);
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            padding: EdgeInsets.all(isShort ? 14 : 20),
-            decoration: BoxDecoration(
-              gradient: gradient,
-              color: gradient == null ? AppTheme.glassSurface : null,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: borderColor,
-                width: isSelected || (showFeedback && isCorrect) ? 2 : 1,
-              ),
-              boxShadow: isSelected || showFeedback
-                  ? [
-                      BoxShadow(
-                        color: borderColor.withOpacity(0.2),
-                        blurRadius: 15,
-                        spreadRadius: 1,
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+    return AnimatedScale(
+      duration: AppTheme.shortAnimation,
+      scale: isSelected ? 1.02 : 1.0,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          padding: EdgeInsets.all(isShort ? 16 : 22),
+          decoration: AppTheme.glassDecoration(
+            borderRadius: 24,
+            borderColor: glowColor != Colors.transparent ? glowColor : null,
+            surfaceColor: cardGradient != null ? null : Colors.white.withOpacity(0.04),
+          ).copyWith(
+            gradient: cardGradient,
+            boxShadow: [
+              if (glowColor != Colors.transparent)
+                BoxShadow(
+                  color: glowColor,
+                  blurRadius: 20,
+                  spreadRadius: -5,
+                ),
+            ],
+          ),
+          child: Row(
+            children: [
+              AnimatedContainer(
+                duration: AppTheme.shortAnimation,
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected || (showFeedback && isCorrect)
+                      ? (textColor ?? AppTheme.primaryBlue).withOpacity(0.15)
+                      : Colors.white.withOpacity(0.05),
+                  border: Border.all(
                     color: isSelected || (showFeedback && isCorrect)
-                        ? borderColor.withOpacity(0.2)
-                        : AppTheme.glassSurface,
-                    border: Border.all(color: borderColor, width: 2),
-                  ),
-                  child: Center(
-                    child: Text(
-                      optionKey,
-                      style: AppTheme.heading3.copyWith(
-                        color: isSelected || (showFeedback && isCorrect)
-                            ? borderColor
-                            : AppTheme.textPrimary,
-                        fontSize: 18,
-                      ),
-                    ),
+                        ? (textColor ?? AppTheme.primaryBlue)
+                        : Colors.white.withOpacity(0.2),
+                    width: 2,
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
+                child: Center(
                   child: Text(
-                    optionValue,
-                    style: AppTheme.bodyLarge.copyWith(
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    optionKey,
+                    style: AppTheme.heading3.copyWith(
+                      color: isSelected || (showFeedback && isCorrect)
+                          ? (textColor ?? Colors.white)
+                          : Colors.white70,
+                      fontSize: 18,
                     ),
                   ),
                 ),
-                if (showFeedback && isCorrect)
-                   const Icon(Icons.check_circle_rounded, color: AppTheme.successGreen, size: 28),
-                if (showFeedback && isSelected && !isCorrect)
-                   const Icon(Icons.cancel_rounded, color: AppTheme.energyPink, size: 28),
-              ],
-            ),
+              ),
+              const SizedBox(width: 18),
+              Expanded(
+                child: Text(
+                  optionValue,
+                  style: AppTheme.bodyLarge.copyWith(
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: Colors.white.withOpacity(0.9),
+                  ),
+                ),
+              ),
+              if (showFeedback && isCorrect)
+                 const Icon(Icons.check_circle_rounded, color: AppTheme.successGreen, size: 30),
+              if (showFeedback && isSelected && !isCorrect)
+                 const Icon(Icons.error_rounded, color: AppTheme.energyPink, size: 30),
+            ],
           ),
         ),
       ),
@@ -351,35 +366,29 @@ class QuizScreen extends StatelessWidget {
     required bool isLastQuestion,
     bool isShort = false,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: isShort ? 16 : 20),
-            decoration: AppTheme.glassButtonDecoration(
-              gradient: const LinearGradient(
-                colors: [AppTheme.primaryCyan, AppTheme.primaryBlue],
-              ),
-              borderColor: AppTheme.primaryCyan.withOpacity(0.6),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        width: double.infinity,
+        height: 64,
+        decoration: AppTheme.premiumButtonDecoration(
+          gradient: isLastQuestion ? AppTheme.premiumEmeraldGradient : AppTheme.premiumBlueGradient,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              isLastQuestion ? 'NATIJANI KO\'RISH' : 'KEYINGI SAVOL',
+              style: AppTheme.buttonText.copyWith(fontSize: 17),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  isLastQuestion ? 'NATIJANI KO\'RISH' : 'KEYINGI SAVOL',
-                  style: AppTheme.buttonText,
-                ),
-                const SizedBox(width: 12),
-                Icon(
-                  isLastQuestion ? Icons.assessment_rounded : Icons.arrow_forward_rounded,
-                  color: AppTheme.textPrimary,
-                ),
-              ],
+            const SizedBox(width: 14),
+            Icon(
+              isLastQuestion ? Icons.workspace_premium_rounded : Icons.arrow_forward_ios_rounded,
+              color: Colors.white,
+              size: 20,
             ),
-          ),
+          ],
         ),
       ),
     );
