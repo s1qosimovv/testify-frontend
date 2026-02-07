@@ -31,13 +31,16 @@ class UploadScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 10),
-                                // Branded Logo in Top-Left (Maximum Visibility)
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.asset(
-                                    'assets/images/logo.png',
-                                    height: 250,
-                                    fit: BoxFit.contain,
+                                // Branded Logo - Explicitly Aligned Left
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.asset(
+                                      'assets/images/logo.png',
+                                      height: 120, // Adjusted for better balance
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 32),
