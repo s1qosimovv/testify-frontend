@@ -11,19 +11,19 @@ dependencies:
     sdk: flutter
   
   # State Management
-  provider: ^6.0.5
+  provider: ^6.1.2
   
   # Networking
-  http: ^1.1.0
+  http: ^1.2.1
   
   # File Picker
-  file_picker: ^5.3.3
+  file_picker: ^10.3.10
   
   # Icons
   cupertino_icons: ^1.0.2
   
   # URL Launcher
-  url_launcher: ^6.2.1
+  url_launcher: ^6.3.1
   
   # Splash Screen
   flutter_native_splash: ^2.3.5
@@ -31,8 +31,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
   android: "launcher_icon"
