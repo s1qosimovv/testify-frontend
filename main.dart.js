@@ -80733,7 +80733,7 @@ $3(a,b,c){return A.a4k(new A.aeT(this.a,b))},
 $S:510}
 A.aeT.prototype={
 $2(a,b){var s,r,q,p,o,n,m,l=null,k=b.d,j=A.bU(a,l,t.w).w.a.a>600?32:20,i=A.ce(12)
-i=A.hs(i,new A.xB(A.aHr(l,l,new A.vO("assets/images/logo.png",l,l)),50,B.zv,l))
+i=A.hs(i,new A.xB(A.aHr(l,l,new A.vO("assets/images/logo.png",l,l)),80,B.zv,l))
 s=t.D
 i=A.e5(A.c([B.y0,i,B.eL,A.cc("Bilimingizni testga\naylantiring",l,l,l,B.yp.QY(k<600?28:32,B.cz,1.2),l,l),B.hH,A.cc("Hujjatni tashlang. AI qolganini qiladi.",l,l,l,B.eQ.lF(B.bN,14),l,l)],s),B.ch,B.a4,B.aj)
 r=this.a
