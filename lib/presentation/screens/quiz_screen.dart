@@ -21,63 +21,78 @@ class QuizScreen extends StatelessWidget {
         return Scaffold(
           body: MeshBackground(
             child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 24.0 : 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Glassmorphic Progress Bar
-                    _buildProgressBar(provider.currentQuestionIndex, totalQuestions),
-                    
-                    const SizedBox(height: 32),
-
-                    // Question Card
-                    _buildQuestionCard(currentQuestion.question, provider.currentQuestionIndex + 1),
-                    
-                    const SizedBox(height: 24),
-
-                    // Options List
-                    Expanded(
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          children: currentQuestion.options.entries.map((entry) {
-                            final optionKey = entry.key;
-                            final optionValue = entry.value;
-                            final isSelected = currentAnswer == optionKey;
-                            final isCorrect = currentQuestion.correctAnswer == optionKey;
-                            final showFeedback = currentAnswer != null;
-
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: _buildOptionCard(
-                                optionKey: optionKey,
-                                optionValue: optionValue,
-                                isSelected: isSelected,
-                                isCorrect: isCorrect,
-                                showFeedback: showFeedback,
-                                onTap: currentAnswer == null
-                                    ? () => provider.selectAnswer(optionKey)
-                                    : null,
-                              ),
-                            );
-                          }).toList(),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isShort = constraints.maxHeight < 600;
+                  return Padding(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 24.0 : 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Glassmorphic Progress Bar
+                        _buildProgressBar(
+                          provider.currentQuestionIndex, 
+                          totalQuestions,
+                          isShort: isShort,
                         ),
-                      ),
+                        
+                        SizedBox(height: isShort ? 16 : 32),
+        
+                        // Question Card
+                        _buildQuestionCard(
+                          currentQuestion.question, 
+                          provider.currentQuestionIndex + 1,
+                          isShort: isShort,
+                        ),
+                        
+                        SizedBox(height: isShort ? 16 : 24),
+        
+                        // Options List (Scrollable)
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: currentQuestion.options.entries.map((entry) {
+                                final optionKey = entry.key;
+                                final optionValue = entry.value;
+                                final isSelected = currentAnswer == optionKey;
+                                final isCorrect = currentQuestion.correctAnswer == optionKey;
+                                final showFeedback = currentAnswer != null;
+        
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  child: _buildOptionCard(
+                                    optionKey: optionKey,
+                                    optionValue: optionValue,
+                                    isSelected: isSelected,
+                                    isCorrect: isCorrect,
+                                    showFeedback: showFeedback,
+                                    onTap: currentAnswer == null
+                                        ? () => provider.selectAnswer(optionKey)
+                                        : null,
+                                    isShort: isShort,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+        
+                        const SizedBox(height: 16),
+        
+                        // Next Button
+                        if (currentAnswer != null)
+                          _buildNextButton(
+                            onTap: () => provider.nextQuestion(),
+                            isLastQuestion: provider.currentQuestionIndex == totalQuestions - 1,
+                            isShort: isShort,
+                          ),
+                        
+                        const SizedBox(height: 8),
+                      ],
                     ),
-
-                    const SizedBox(height: 16),
-
-                    // Next Button
-                    if (currentAnswer != null)
-                      _buildNextButton(
-                        onTap: () => provider.nextQuestion(),
-                        isLastQuestion: provider.currentQuestionIndex == totalQuestions - 1,
-                      ),
-                    
-                    const SizedBox(height: 8),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),
@@ -86,7 +101,7 @@ class QuizScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressBar(int current, int total) {
+  Widget _buildProgressBar(int current, int total, {bool isShort = false}) {
     final progress = (current + 1) / total;
     
     return ClipRRect(
@@ -157,13 +172,13 @@ class QuizScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionCard(String question, int questionNumber) {
+  Widget _buildQuestionCard(String question, int questionNumber, {bool isShort = false}) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(30),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          padding: const EdgeInsets.all(28),
+          padding: EdgeInsets.all(isShort ? 20 : 28),
           decoration: AppTheme.glassDecoration(borderRadius: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,6 +222,7 @@ class QuizScreen extends StatelessWidget {
     required bool isCorrect,
     required bool showFeedback,
     VoidCallback? onTap,
+    bool isShort = false,
   }) {
     Color borderColor = AppTheme.glassBorder;
     Gradient? gradient;
@@ -233,7 +249,7 @@ class QuizScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(isShort ? 14 : 20),
             decoration: BoxDecoration(
               gradient: gradient,
               color: gradient == null ? AppTheme.glassSurface : null,
@@ -300,6 +316,7 @@ class QuizScreen extends StatelessWidget {
   Widget _buildNextButton({
     required VoidCallback onTap,
     required bool isLastQuestion,
+    bool isShort = false,
   }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
@@ -308,7 +325,7 @@ class QuizScreen extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: isShort ? 16 : 20),
             decoration: AppTheme.glassButtonDecoration(
               gradient: const LinearGradient(
                 colors: [AppTheme.primaryCyan, AppTheme.primaryBlue],

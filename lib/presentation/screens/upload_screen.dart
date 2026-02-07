@@ -14,60 +14,74 @@ class UploadScreen extends StatelessWidget {
         child: SafeArea(
           child: Consumer<QuizProvider>(
             builder: (context, provider, child) {
-              return Padding(
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 32.0 : 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 20),
-                    
-                    // Top Section: AI Orb
-                    Center(
-                      child: Column(
-                        children: [
-                          const AIOrb(size: 180),
-                          const SizedBox(height: 32),
-                          Text(
-                            "Bilimingizni testga\naylantiring",
-                            textAlign: TextAlign.center,
-                            style: AppTheme.heading1.copyWith(
-                              fontSize: 32,
-                              height: 1.2,
-                              fontWeight: FontWeight.w800,
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Padding(
+                        padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 32.0 : 20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Top Content: Orb and Title
+                            Column(
+                              children: [
+                                const SizedBox(height: 10),
+                                Center(
+                                  child: AIOrb(size: constraints.maxHeight < 600 ? 140 : 180),
+                                ),
+                                const SizedBox(height: 24),
+                                Text(
+                                  "Bilimingizni testga\naylantiring",
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.heading1.copyWith(
+                                    fontSize: constraints.maxHeight < 600 ? 28 : 32,
+                                    height: 1.2,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Hujjatni tashlang. AI qolganini qiladi.",
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.bodyMedium.copyWith(
+                                    fontSize: 14,
+                                    color: AppTheme.textSecondary,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            "Hujjatni tashlang. AI qolganini qiladi.",
-                            textAlign: TextAlign.center,
-                            style: AppTheme.bodyMedium.copyWith(
-                              fontSize: 16,
-                              color: AppTheme.textSecondary,
+
+                            const SizedBox(height: 32),
+
+                            // Middle Content: Drop Zone and Selector
+                            Column(
+                              children: [
+                                _buildImmersiveDropZone(context, provider),
+                                if (provider.selectedFile != null) ...[
+                                  const SizedBox(height: 20),
+                                  _buildQuestionCountSelector(context, provider),
+                                ],
+                              ],
                             ),
-                          ),
-                        ],
+
+                            const SizedBox(height: 32),
+
+                            // Bottom Content: Start Button
+                            Column(
+                              children: [
+                                _buildStartButton(context, provider),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    
-                    const Spacer(),
-
-                    // Main Drop Zone / Upload Area
-                    _buildImmersiveDropZone(context, provider),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Question Count Selector (Visible only when file selected)
-                    if (provider.selectedFile != null)
-                      _buildQuestionCountSelector(context, provider),
-
-                    const Spacer(),
-
-                    // Start Button
-                    _buildStartButton(context, provider),
-                    
-                    const SizedBox(height: 10),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),

@@ -164,6 +164,14 @@ class AppTheme {
     fontFamily: 'Inter',
   );
   
+  static const TextStyle bodySmall = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.normal,
+    color: textSecondary,
+    height: 1.3,
+    fontFamily: 'Inter',
+  );
+  
   static const TextStyle buttonText = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
