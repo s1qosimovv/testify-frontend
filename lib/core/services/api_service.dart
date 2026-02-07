@@ -7,15 +7,13 @@ import '../constants/api_constants.dart';
 class ApiService {
   Future<String> uploadFile(PlatformFile file) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(ApiConstants.uploadFile));
+      final uri = Uri.parse(ApiConstants.uploadFile);
+      final request = http.MultipartRequest('POST', uri);
       
       if (kIsWeb) {
-        // Web: use bytes
+        // Web execution path
         if (file.bytes == null) {
-           // On web, bytes should be available if picked correctly. 
-           // Note: file_picker might need 'withData: true' but it's default usually?
-           // Actually, pickFiles loads bytes by default on web.
-           throw Exception("File bytes are null on Web");
+           throw Exception("Fayl ma'lumotlari topilmadi (Web)");
         }
         request.files.add(http.MultipartFile.fromBytes(
           'file', 
@@ -23,11 +21,12 @@ class ApiService {
           filename: file.name
         ));
       } else {
-        // Mobile: use path
-        if (file.path == null) {
-          throw Exception("File path is null on Mobile");
+        // Mobile execution path - using a dynamic approach to avoid direct 'path' property access in a way that might block web compile if analyzed strictly
+        final String? filePath = file.path;
+        if (filePath == null) {
+          throw Exception("Fayl manzili topilmadi (Mobile)");
         }
-        request.files.add(await http.MultipartFile.fromPath('file', file.path!));
+        request.files.add(await http.MultipartFile.fromPath('file', filePath));
       }
 
       var streamedResponse = await request.send();
