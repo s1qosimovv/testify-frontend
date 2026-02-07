@@ -38,8 +38,19 @@ class QuizProvider with ChangeNotifier {
   int _questionCount = 10;
   int get questionCount => _questionCount;
 
+  int _timePerQuestion = 30; // Default 30s
+  int get timePerQuestion => _timePerQuestion;
+
   void setQuestionCount(int count) {
+    // New max limit: 250 questions
+    if (count > 250) count = 250;
+    if (count < 1) count = 1;
     _questionCount = count;
+    notifyListeners();
+  }
+
+  void setTimePerQuestion(int seconds) {
+    _timePerQuestion = seconds;
     notifyListeners();
   }
 
@@ -117,7 +128,11 @@ class QuizProvider with ChangeNotifier {
       final text = await _repository.uploadFile(_selectedFile!);
 
       // 2. Generate quiz
-      final result = await _repository.generateQuiz(text, questionCount: _questionCount);
+      final result = await _repository.generateQuiz(
+        text, 
+        questionCount: _questionCount,
+        timePerQuestion: _timePerQuestion,
+      );
       
       _quiz = result['quiz'];
       _quizId = result['quizId'];

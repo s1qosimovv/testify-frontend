@@ -11,9 +11,9 @@ class QuizRepository {
     return await _apiService.uploadFile(file);
   }
 
-  Future<Map<String, dynamic>> generateQuiz(String text, {int questionCount = 10}) async {
+  Future<Map<String, dynamic>> generateQuiz(String text, {int questionCount = 10, int timePerQuestion = 30}) async {
     // Returns map with 'quiz_id' and 'quiz' object
-    final data = await _apiService.generateQuiz(text, questionCount: questionCount);
+    final data = await _apiService.generateQuiz(text, questionCount: questionCount, timePerQuestion: timePerQuestion);
     
     // Parse the inner 'quiz' list from the response
     // Response format: { "quiz_id": "...", "quiz": { "quiz": [...] } }

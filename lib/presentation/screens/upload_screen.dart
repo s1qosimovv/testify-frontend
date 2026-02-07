@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../state/quiz_provider.dart';
@@ -63,6 +64,8 @@ class UploadScreen extends StatelessWidget {
                                 if (provider.selectedFile != null) ...[
                                   const SizedBox(height: 20),
                                   _buildQuestionCountSelector(context, provider),
+                                  const SizedBox(height: 16),
+                                  _buildTimeSelector(context, provider),
                                 ],
                               ],
                             ),
@@ -186,34 +189,114 @@ class UploadScreen extends StatelessWidget {
             children: [
               Text(
                 "Savollar soni",
-                style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+                style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryBlue.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  "${provider.questionCount}",
-                  style: AppTheme.heading3.copyWith(color: AppTheme.primaryBlue),
+                width: 100,
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (value) {
+                    final count = int.tryParse(value);
+                    if (count != null) {
+                      provider.setQuestionCount(count);
+                    }
+                  },
+                  textAlign: TextAlign.center,
+                  style: AppTheme.heading3.copyWith(color: AppTheme.primaryBlue, fontSize: 18),
+                  decoration: InputDecoration(
+                    hintText: "10",
+                    hintStyle: TextStyle(color: AppTheme.textSecondary.withOpacity(0.3)),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    filled: true,
+                    fillColor: AppTheme.primaryBlue.withOpacity(0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppTheme.primaryBlue.withOpacity(0.4)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppTheme.primaryBlue.withOpacity(0.2)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: AppTheme.primaryBlue, width: 2),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              activeTrackColor: AppTheme.primaryBlue,
-              inactiveTrackColor: AppTheme.glassSurface,
-              thumbColor: AppTheme.primaryBlue,
-              overlayColor: AppTheme.primaryBlue.withOpacity(0.2),
-            ),
-            child: Slider(
-              value: provider.questionCount.toDouble(),
-              min: 5,
-              max: 30,
-              divisions: 25,
-              onChanged: (value) => provider.setQuestionCount(value.toInt()),
+          const SizedBox(height: 8),
+          Text(
+            "Maksimum 250 ta savol yaratish mumkin",
+            style: AppTheme.bodySmall.copyWith(fontSize: 12, color: AppTheme.textSecondary),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeSelector(BuildContext context, QuizProvider provider) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: AppTheme.glassDecoration(
+        borderRadius: 20,
+        borderColor: AppTheme.primaryCyan.withOpacity(0.3),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Savollarga vaqt",
+                style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryCyan.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  "${provider.timePerQuestion} sek",
+                  style: AppTheme.heading3.copyWith(color: AppTheme.primaryCyan, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [15, 30, 45, 60].map((seconds) {
+                final isSelected = provider.timePerQuestion == seconds;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: InkWell(
+                    onTap: () => provider.setTimePerQuestion(seconds),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppTheme.primaryCyan : AppTheme.glassSurface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? AppTheme.primaryCyan : AppTheme.glassBorder,
+                        ),
+                      ),
+                      child: Text(
+                        "$seconds s",
+                        style: AppTheme.bodySmall.copyWith(
+                          color: isSelected ? Colors.black : AppTheme.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ],

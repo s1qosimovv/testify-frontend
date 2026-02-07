@@ -132,6 +132,39 @@ class QuizScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+              // Group Share Button (Before test starts)
+              Consumer<QuizProvider>(
+                builder: (context, provider, child) {
+                  return InkWell(
+                    onTap: () => provider.shareToTelegram(),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryCyan.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.primaryCyan.withOpacity(0.3)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.groups_rounded, color: AppTheme.primaryCyan, size: 20),
+                          const SizedBox(width: 8),
+                          Text(
+                            "GURUHDA ISHLATISH",
+                            style: AppTheme.bodySmall.copyWith(
+                              color: AppTheme.primaryCyan,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(height: 16),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),

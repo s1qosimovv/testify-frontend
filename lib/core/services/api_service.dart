@@ -31,7 +31,7 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> generateQuiz(String text, {int questionCount = 10}) async {
+  Future<Map<String, dynamic>> generateQuiz(String text, {int questionCount = 10, int timePerQuestion = 30}) async {
     try {
       final response = await http.post(
         Uri.parse(ApiConstants.generateQuiz),
@@ -39,6 +39,7 @@ class ApiService {
         body: json.encode({
           'text': text,
           'num_questions': questionCount,
+          'time_per_question': timePerQuestion,
         }),
       ).timeout(const Duration(seconds: 120));
 
