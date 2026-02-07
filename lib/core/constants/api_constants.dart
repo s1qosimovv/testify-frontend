@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 class ApiConstants {
   // 10.0.2.2 for Android Emulator, localhost for Web/iOS
