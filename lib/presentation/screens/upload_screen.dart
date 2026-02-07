@@ -72,6 +72,8 @@ class UploadScreen extends StatelessWidget {
                             // Bottom Content: Start Button
                             Column(
                               children: [
+                                if (provider.error != null) _buildErrorCard(provider.error!),
+                                const SizedBox(height: 16),
                                 _buildStartButton(context, provider),
                                 const SizedBox(height: 10),
                               ],
@@ -86,6 +88,28 @@ class UploadScreen extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildErrorCard(String error) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: AppTheme.glassDecoration(
+        borderRadius: 16,
+        borderColor: AppTheme.energyPink.withOpacity(0.5),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.error_outline_rounded, color: AppTheme.energyPink),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              error,
+              style: AppTheme.bodySmall.copyWith(color: AppTheme.energyPink, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
       ),
     );
   }

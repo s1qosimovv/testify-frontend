@@ -40,7 +40,7 @@ class ApiService {
           'text': text,
           'num_questions': questionCount,
         }),
-      ).timeout(const Duration(seconds: 30));
+      ).timeout(const Duration(seconds: 120));
 
       if (response.statusCode == 200) {
         return json.decode(response.body);
